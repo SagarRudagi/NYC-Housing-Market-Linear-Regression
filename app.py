@@ -69,8 +69,8 @@ def play(params):
 
     # Calculate and display MSE
     st.markdown('#')
-    mse = mean_squared_error(y, predicted_y)
-    st.markdown(f"<h2 style='font-size: 22px;color: green;'>Mean Squared Error: {mse:.2f}</h2>", unsafe_allow_html=True)
+    rmse = np.sqrt(mean_squared_error(y, predicted_y))
+    st.markdown(f"<h2 style='font-size: 22px;color: green;'>Root Mean Squared Error: {rmse:.2f}</h2>", unsafe_allow_html=True)
     st.markdown('#')
 
     # Plot the data and predicted line
