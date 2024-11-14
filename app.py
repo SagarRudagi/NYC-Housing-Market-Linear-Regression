@@ -24,6 +24,10 @@ df.drop([1,7,304,823,2146,2148,3130,4623], axis=0, inplace=True) # Dropping outl
 # Create the Streamlit app
 
 def play(params):
+    st.markdown('#')
+    st.markdown("<h2 style='font-size: 24px;'>Play with the Graph:</h2>", unsafe_allow_html=True)
+    st.markdown('#')
+
     slope = float(params[1])
     intercept = float(params[0])
     
@@ -41,10 +45,14 @@ def play(params):
     else:
         intercept_max = 2 * intercept
 
-    slope_slider = st.slider("Slope", min_value=slope_min, max_value=slope_max, value=slope, step=0.1)
-    slope_text = st.text_input("Slope (text)", value=str(slope_slider))
-    intercept_slider = st.slider("Intercept", min_value=intercept_min, max_value=intercept_max, value=intercept, step=0.1)
-    intercept_text = st.text_input("Intercept (text)", value=str(intercept_slider))
+
+    st.markdown("<h4 style='font-size: 20px;'>Slope:</h4>", unsafe_allow_html=True)
+    slope_slider = st.slider("", min_value=slope_min, max_value=slope_max, value=slope, step=0.1)
+    slope_text = st.text_input("", value=str(slope_slider))
+    st.markdown('#')
+    st.markdown("<h4 style='font-size: 20px;'>Intercept:</h4>", unsafe_allow_html=True)
+    intercept_slider = st.slider("", min_value=intercept_min, max_value=intercept_max, value=intercept, step=0.1)
+    intercept_text = st.text_input("", value=str(intercept_slider))
 
     # Update slider values from text boxes
     if slope_text:
@@ -60,13 +68,15 @@ def play(params):
     predicted_y = slope_slider * X + intercept_slider
 
     # Calculate and display MSE
+    st.markdown('#')
     mse = mean_squared_error(y, predicted_y)
-    st.write(f"Mean Squared Error: {mse:.2f}")
+    st.markdown(f"<h2 style='font-size: 22px;color: green;'>Mean Squared Error: {mse:.2f}</h2>", unsafe_allow_html=True)
+    st.markdown('#')
 
     # Plot the data and predicted line
     fig, ax = plt.subplots()
-    ax.scatter(X, y, label='True Data')
-    ax.plot(X, predicted_y, color='red', label='Predicted Line')
+    ax.scatter(X, y, color="blue", label='True Data')
+    ax.plot(X, predicted_y, color='red', label='Line Set with values')
     ax.set_xlabel('X')
     ax.set_ylabel('Y')
     ax.legend()
@@ -76,8 +86,9 @@ def play(params):
 def main():
     # Display the dataset
     
-    st.write('Dataset:')
-    st.dataframe(df)
+    st.markdown("<h2 style='font-size: 24px;'>Dataset:</h2>", unsafe_allow_html=True)
+    with st.container():
+        st.dataframe(df)
     
 
     # Prepare the data for the model
@@ -91,6 +102,8 @@ def main():
     # Make predictions
     y_pred = model.predict(X)
 
+    st.markdown("<h2 style='font-size: 24px;'>Regression Graph:</h2>", unsafe_allow_html=True)
+
     # Visualize the model
     fig, ax = plt.subplots()
     ax.scatter(X, y, color='blue', label='Actual Data')
@@ -101,9 +114,10 @@ def main():
     st.pyplot(fig)
 
     # Display model parameters
-    st.write('Model Parameters:')
-    st.write('Intercept:', model.intercept_)
-    st.write('Coefficient:', model.coef_[0])
+    st.markdown("<h2 style='font-size: 24px;'>Model Parameters:</h2>", unsafe_allow_html=True)
+    st.markdown(f"<h2 style='font-size: 18px;'>Intercept: {model.intercept_}</h2>", unsafe_allow_html=True)
+    st.markdown(f"<h2 style='font-size: 18px;'>Coefficient: {model.coef_[0]}</h2>", unsafe_allow_html=True)
+    
     return [model.intercept_, model.coef_[0]]
 
 
